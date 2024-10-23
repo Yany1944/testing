@@ -1,214 +1,224 @@
-REM Last-¨ª ActivityViewnetsh winsock resetnetsh winsock reset catalognetsh int ip resetnetsh advfirewall resetnetsh int reset allnetsh int ipv4 resetnetsh int ipv6 reset
-ipconfig / releaseipconfig / renewipconfig / flushdns
-@ECHO OFF
-@TITLE = [QIONYX LEGEND].
-REM  ¤¥ξαμ, α®εΰ ­¨βμ δ ©« Ά ª®¤¨ΰ®Άª¥ DOS-866 ­¥ § ΅λ«¨
-CHCP 866
-
-REM ‡¥«¥­λ© ­  η¥ΰ­®¬ - ¨­βΰ¨£γξι¥... ®―οβμ ¦¥, ε ª¥ΰλ ¨ Άα¥ β ª®¥
-COLOR 04
-
-CLS
-
-FOR /F "tokens=1,2*" %%V IN ('bcdedit') DO SET adminTest=%%V
-	IF (%adminTest%)==(βª § ­®) GOTO errNoAdmin
-	IF (%adminTest%)==(Access) GOTO errNoAdmin
-
-ECHO.
-
-	ECHO.
-	ECHO —‘’€ ‚‘…• †“€‹‚ Windows
-	FOR /F "tokens=*" %%G in ('wevtutil.exe el') DO (call :do_clear "%%G")
-	ECHO.
-	ECHO ‚λ―®«­¥­®
-	ECHO.
-ECHO.
-ECHO —‘’€ ‘’ ShellBag - ΰ¥¥αβΰ
-REG DELETE "HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /va /f
-REG DELETE "HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\BagMRU" /f
-REG DELETE "HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags" /f
-REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\Shell\BagMRU" /f
-REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\Shell\Bags" /f
-ECHO.
-
-ECHO.
-ECHO —‘’€ ‘’ Explorer - ΰ¥¥αβΰ
-REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU" /va /f
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM ComDlg32. αβ®ΰ¨ο ¤¨ «®£®Ά "®βªΰλβμ\α®εΰ ­¨βμ" ¨ "―®α«¥¤­¨ε ¬¥αβ ―®α¥ι¥­¨©"
-REM γβ¨«¨βλ NirSoft - LastActivityView
-ECHO.
-ECHO —‘’€ ‘’ OpenSave ¨ LastVisited - ΰ¥¥αβΰ
-REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\FirstFolder" /va /f
-REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedPidlMRU" /va /f
-REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedPidlMRULegacy" /va /f
-REM (γβ¨«¨βλ NirSoft - OpenSaveFilesView)
-REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU" /f
-REG ADD "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU"
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM ¥α«¨ ―®«μ§®Ά β¥«μ Άλ΅ΰ « Ά ¬¥­ξ ­¥ 1 β.¥. 2 ¨«¨ 3
-
-	REM UserAssist. η¨αβª  α―¨α®ª  § ―γι¥­­λε ―ΰ®£ΰ ¬¬ Ά ¬¥­ξ "γαª"
-	REM γβ¨«¨βλ NirSoft - UserAssistView
-	ECHO.	
-	ECHO —‘’€ ‘’ UserAssist - ΰ¥¥αβΰ
-	REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist" /f
-	REG ADD "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist"
-	ECHO.
-
-
-REM ------------------------------------------------------------------------------------------
-REM AppCompatCache
-ECHO.
-ECHO —‘’€ ‘’ AppCompatCache - ΰ¥¥αβΰ
-REG DELETE "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\AppCompatCache" /va /f
-REG DELETE "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Session Manager\AppCompatCache" /va /f
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM DiagnosedApplications. „¨ £­®αβ¨ª  γβ¥η¥ª ― ¬οβ¨ Ά ―ΰ¨«®¦¥­¨¨ ‘ Windows
-ECHO.
-ECHO —‘’€ ‘’ DiagnosedApplications - ΰ¥¥αβΰ
-REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications" /f
-REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications"
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM ®«γη¥­¨¥ SID - ¨¤¥­β¨δ¨ª β®ΰ ΅¥§®― α­®αβ¨ β¥ªγι¥£® ―®«μ§®Ά β¥«ο 
-FOR /F "tokens=2" %%i IN ('whoami /user /fo table /nh') DO SET usersid=%%i
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM Search. αβ®ΰ¨ο ―®¨αª  
-ECHO.
-ECHO —‘’€ ‘’ Search - ΰ¥¥αβΰ
-	REG DELETE "HKEY_USERS\%usersid%\Software\Microsoft\Windows\CurrentVersion\Search\RecentApps" /f
-	REG ADD "HKEY_USERS\%usersid%\Software\Microsoft\Windows\CurrentVersion\Search\RecentApps"
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM BAM. 
-REM ® ¨¤¥¥, ―ΰ¨ ―¥ΰ¥§ £ΰγ§ª¥ § βΰ¥βαο α ¬®.  
-REM ® ¬®¦­® α¤¥« βμ ®β¤¥«μ­λ© bat ¨ § ―γαª βμ, ­ ―ΰ¨¬¥ΰ, ―®α«¥ ΰ ΅®βλ α portable-―ΰ¨«®¦¥­¨ο¬¨
-ECHO.
-ECHO —‘’€ ‘’ α«γ¦΅λ Background Activity Moderator - ΰ¥¥αβΰ
-REG DELETE "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings\%usersid%" /va /f
-REG DELETE "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\bam\UserSettings\%usersid%" /va /f
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM AppCompatFlags
-ECHO.
-ECHO —‘’€ ‘’ AppCompatFlags - ΰ¥¥αβΰ
-REM γβ¨«¨βλ NirSoft - ExecutedProgramsList
-REG DELETE "HKEY_USERS\%usersid%\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store" /va /f
-
-	REG DELETE  "HKEY_USERS\%usersid%\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /va /f
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM αβ®ΰ¨ο "¬®­β¨ΰ®Ά ­¨ο" ¤¨αª®Ά Ά β.η. ¨ TrueCrypt
-ECHO.
-ECHO —‘’€ ‘’ MountedDevices - ΰ¥¥αβΰ
-ECHO.
-REG DELETE "HKEY_USERS\%usersid%\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2" /f
-REG ADD "HKEY_USERS\%usersid%\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2"
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-
-REM ------------------------------------------------------------------------------------------
-REM η¨αβª  α―¨αª®Ά ΅λαβΰ®£® ―¥ΰ¥ε®¤ 
-ECHO.
-REM γβ¨«¨βλ NirSoft - JumpListsView, RecentFilesView
-ECHO —‘’€ ‘’ Recent - δ ©«®Ά ο α¨αβ¥¬ 
-DEL /f /q %APPDATA%\Microsoft\Windows\Recent\*.*
-DEL /f /q %APPDATA%\Microsoft\Windows\Recent\CustomDestinations\*.*
-DEL /f /q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\*.*
-ECHO ‚λ―®«­¥­®
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-REM ------------------------------------------------------------------------------------------
-ECHO.
-ECHO —‘’€ ‘’ Panther - δ ©«®Ά ο α¨αβ¥¬ 
-DEL /f /q %systemroot%\Panther\*.*
-ECHO ‚λ―®«­¥­®
-ECHO.
-REM ------------------------------------------------------------------------------------------
-
-REM ------------------------------------------------------------------------------------------
-ECHO.
-ECHO —‘’€ ‘’ AppCompat - δ ©«®Ά ο α¨αβ¥¬ 
-DEL /f /q %systemroot%\appcompat\Programs\*.dll
-DEL /f /q %systemroot%\appcompat\Programs\*.exe
-DEL /f /q %systemroot%\appcompat\Programs\*.txt
-DEL /f /q %systemroot%\appcompat\Programs\*.xml
-DEL /f /q %systemroot%\appcompat\Programs\Install\*.txt
-DEL /f /q %systemroot%\appcompat\Programs\Install\*.xml
-DEL /f /q %systemroot%\appcompat\Programs\Install\*.dll
-DEL /f /q %systemroot%\appcompat\Programs\Install\*.exe
-ECHO ‚λ―®«­¥­®
-ECHO.
-REM ----
-
-
-REM ------------------------------------------------------------------------------------------
-	ECHO.
-	REM Prefetch. “¤ «¥­¨¥ δ ©«®Ά, ®―β¨¬¨§¨ΰγξι¨ε § ―γαª ―ΰ¨«®¦¥­¨©. Windows Ά α«¥¤γξι¨© ΰ § § £ΰγ§¨βαο ¬¥¤«¥­­¥¥
-	REM γβ¨«¨βλ NirSoft - LastActivityView, ExecutedProgramsList
-	ECHO —‘’€ ‘’ Prefetch - δ ©«®Ά ο α¨αβ¥¬ 
-	DEL /f /q %systemroot%\Prefetch\*.pf
-	DEL /f /q %systemroot%\Prefetch\*.ini
-	DEL /f /q %systemroot%\Prefetch\*.7db
-	DEL /f /q %systemroot%\Prefetch\*.ebd
-	DEL /f /q %systemroot%\Prefetch\*.bin
-	REM SuperFetch. “¤ «¥­¨¥ ΅ § ®―β¨¬¨§ ζ¨¨ SuperFetch
-	DEL /f /q %systemroot%\Prefetch\*.db
-	REM Trace. “¤ «¥­¨¥ δ ©«®Ά βΰ αα¨ΰ®Άª¨
-	DEL /f /q %systemroot%\Prefetch\ReadyBoot\*.fx
-	ECHO ‚λ―®«­¥­®
-	ECHO.
-
-	ECHO.
-	ECHO —‘’€ ‘’ Minidump - δ ©«®Ά ο α¨αβ¥¬ 
-	REM “¤ «¥­¨¥ ¤ ¬―®Ά ®θ¨΅®ª
-	REM γβ¨«¨βλ NirSoft - LastActivityView
-	DEL /f /q %systemroot%\Minidump\*.*
-	ECHO ‚λ―®«­¥­®
-COLOR 02
-ECHO.
-
-
-
-EXIT
-
-:do_clear
-ECHO η¨αβª  ¦γΰ­ «  %1
-wevtutil.exe cl %1
-GOTO :eof
-
-:errNoAdmin
-COLOR 4
-ECHO ¥®΅ε®¤¨¬® § ―γαβ¨βμ νβ®β αªΰ¨―β ®β ¨¬¥­¨  ¤¬¨­¨αβΰ β®ΰ 
-ECHO.
+REM Last-ΠΠ„ ActivityView
+
+netsh winsock reset
+netsh winsock reset catalog
+netsh int ip reset
+netsh advfirewall reset
+netsh int reset all
+netsh int ipv4 reset
+netsh int ipv6 reset
+ipconfig / release
+ipconfig / renew
+ipconfig / flushdns
+@ECHO OFF
+@TITLE = [QIONYX LEGEND].
+REM ΠΒ Β¤ÒΠΎΠ±ΠΌ, Π±Β®ΠµΠ°Β Β­ΠΠ²ΠΌ Π΄Β Β©Β« Ρ Π„Β®Β¤ΠΠ°Β®ΡΠ„Ò DOS-866 Β­Ò Β§Β ΠΠ»Β«Π
+CHCP 866
+
+REM β€΅ÒΒ«ÒΒ­Π»Β© Β­Β  Π·ÒΠ°Β­Β®Β¬ - ΠΒ­Π²Π°ΠΠΠ³ΠΎΠΉÒ... Β®Π‡ΠΏΠ²ΠΌ Β¦Ò, ΠµΒ Π„ÒΠ°Π» Π ΡΠ±Ò Π²Β Π„Β®Ò
+COLOR 04
+
+CLS
+
+FOR /F "tokens=1,2*" %%V IN ('bcdedit') DO SET adminTest=%%V
+	IF (%adminTest%)==(Π‹Π²Π„Β Β§Β Β­Β®) GOTO errNoAdmin
+	IF (%adminTest%)==(Access) GOTO errNoAdmin
+
+ECHO.
+
+	ECHO.
+	ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β€β€β€¦β€Ά β€ β€Ρ’ΠΠ‚β€ΉΠ‹β€ Windows
+	FOR /F "tokens=*" %%G in ('wevtutil.exe el') DO (call :do_clear "%%G")
+	ECHO.
+	ECHO β€Π»Π‡Β®Β«Β­ÒΒ­Β®
+	ECHO.
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ ShellBag - Π°ÒÒΠ±Π²Π°
+REG DELETE "HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" /va /f
+REG DELETE "HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\BagMRU" /f
+REG DELETE "HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags" /f
+REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\Shell\BagMRU" /f
+REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\Shell\Bags" /f
+ECHO.
+
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ Explorer - Π°ÒÒΠ±Π²Π°
+REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU" /va /f
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM ComDlg32. β‚¬Π±Π²Β®Π°ΠΠΏ Β¤ΠΒ Β«Β®ΠΒ®Ρ "Β®Π²Π„Π°Π»Π²ΠΌ\Π±Β®ΠµΠ°Β Β­ΠΠ²ΠΌ" Π "Π‡Β®Π±Β«ÒΒ¤Β­ΠΠµ Β¬ÒΠ±Π² Π‡Β®Π±ÒΠΉÒΒ­ΠΒ©"
+REM Π³Π²ΠΒ«ΠΠ²Π» NirSoft - LastActivityView
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ OpenSave Π LastVisited - Π°ÒÒΠ±Π²Π°
+REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\FirstFolder" /va /f
+REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedPidlMRU" /va /f
+REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\LastVisitedPidlMRULegacy" /va /f
+REM (Π³Π²ΠΒ«ΠΠ²Π» NirSoft - OpenSaveFilesView)
+REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU" /f
+REG ADD "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSavePidlMRU"
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM ÒΠ±Β«Π Π‡Β®Β«ΠΌΒ§Β®ΡΒ Π²ÒΒ«ΠΌ ΡΠ»ΠΠ°Β Β« Ρ Β¬ÒΒ­ΠΎ Β­Ò 1 Π².Ò. 2 ΠΒ«Π 3
+
+	REM UserAssist. Π‹Π·ΠΠ±Π²Π„Β  Π±Π‡ΠΠ±Β®Π„Β  Β§Β Π‡Π³ΠΉÒΒ­Β­Π»Πµ Π‡Π°Β®ΠΠ°Β Β¬Β¬ Ρ Β¬ÒΒ­ΠΎ "ΠΠ³Π±Π„"
+	REM Π³Π²ΠΒ«ΠΠ²Π» NirSoft - UserAssistView
+	ECHO.	
+	ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ UserAssist - Π°ÒÒΠ±Π²Π°
+	REG DELETE "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist" /f
+	REG ADD "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist"
+	ECHO.
+
+
+REM ------------------------------------------------------------------------------------------
+REM AppCompatCache
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ AppCompatCache - Π°ÒÒΠ±Π²Π°
+REG DELETE "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\AppCompatCache" /va /f
+REG DELETE "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Session Manager\AppCompatCache" /va /f
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM DiagnosedApplications. β€ΠΒ ΠΒ­Β®Π±Π²ΠΠ„Β  Π³Π²ÒΠ·ÒΠ„ Π‡Β Β¬ΠΏΠ²Π Ρ Π‡Π°ΠΒ«Β®Β¦ÒΒ­ΠΠ Π‹β€ Windows
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ DiagnosedApplications - Π°ÒÒΠ±Π²Π°
+REG DELETE "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications" /f
+REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\RADAR\HeapLeakDetection\DiagnosedApplications"
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM ΠΒ®Β«Π³Π·ÒΒ­ΠÒ SID - ΠΒ¤ÒΒ­Π²ΠΠ΄ΠΠ„Β Π²Β®Π° ΠÒΒ§Β®Π‡Β Π±Β­Β®Π±Π²Π Π²ÒΠ„Π³ΠΉÒΠΒ® Π‡Β®Β«ΠΌΒ§Β®ΡΒ Π²ÒΒ«ΠΏ 
+FOR /F "tokens=2" %%i IN ('whoami /user /fo table /nh') DO SET usersid=%%i
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM Search. β‚¬Π±Π²Β®Π°ΠΠΏ Π‡Β®ΠΠ±Π„Β  
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ Search - Π°ÒÒΠ±Π²Π°
+	REG DELETE "HKEY_USERS\%usersid%\Software\Microsoft\Windows\CurrentVersion\Search\RecentApps" /f
+	REG ADD "HKEY_USERS\%usersid%\Software\Microsoft\Windows\CurrentVersion\Search\RecentApps"
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM BAM. 
+REM ΠΒ® ΠΒ¤ÒÒ, Π‡Π°Π Π‡ÒΠ°ÒΒ§Β ΠΠ°Π³Β§Π„Ò Β§Β Π²Π°ÒΠ²Π±ΠΏ Π±Β Β¬Β®.  
+REM ΠΒ® Β¬Β®Β¦Β­Β® Π±Β¤ÒΒ«Β Π²ΠΌ Β®Π²Β¤ÒΒ«ΠΌΒ­Π»Β© bat Π Β§Β Π‡Π³Π±Π„Β Π²ΠΌ, Β­Β Π‡Π°ΠΒ¬ÒΠ°, Π‡Β®Π±Β«Ò Π°Β ΠΒ®Π²Π» Π± portable-Π‡Π°ΠΒ«Β®Β¦ÒΒ­ΠΠΏΒ¬Π
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ Π±Β«Π³Β¦ΠΠ» Background Activity Moderator - Π°ÒÒΠ±Π²Π°
+REG DELETE "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings\%usersid%" /va /f
+REG DELETE "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\bam\UserSettings\%usersid%" /va /f
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM AppCompatFlags
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ AppCompatFlags - Π°ÒÒΠ±Π²Π°
+REM Π³Π²ΠΒ«ΠΠ²Π» NirSoft - ExecutedProgramsList
+REG DELETE "HKEY_USERS\%usersid%\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store" /va /f
+
+	REG DELETE  "HKEY_USERS\%usersid%\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" /va /f
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM β‚¬Π±Π²Β®Π°ΠΠΏ "Β¬Β®Β­Π²ΠΠ°Β®ΡΒ Β­ΠΠΏ" Β¤ΠΠ±Π„Β®Ρ Ρ Π².Π·. Π TrueCrypt
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ MountedDevices - Π°ÒÒΠ±Π²Π°
+ECHO.
+REG DELETE "HKEY_USERS\%usersid%\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2" /f
+REG ADD "HKEY_USERS\%usersid%\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2"
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+
+REM ------------------------------------------------------------------------------------------
+REM Π‹Π·ΠΠ±Π²Π„Β  Π±Π‡ΠΠ±Π„Β®Ρ ΠΠ»Π±Π²Π°Β®ΠΒ® Π‡ÒΠ°ÒΠµΒ®Β¤Β 
+ECHO.
+REM Π³Π²ΠΒ«ΠΠ²Π» NirSoft - JumpListsView, RecentFilesView
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ Recent - Π΄Β Β©Β«Β®ΡΒ ΠΏ Π±ΠΠ±Π²ÒΒ¬Β 
+DEL /f /q %APPDATA%\Microsoft\Windows\Recent\*.*
+DEL /f /q %APPDATA%\Microsoft\Windows\Recent\CustomDestinations\*.*
+DEL /f /q %APPDATA%\Microsoft\Windows\Recent\AutomaticDestinations\*.*
+ECHO β€Π»Π‡Β®Β«Β­ÒΒ­Β®
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+REM ------------------------------------------------------------------------------------------
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ Panther - Π΄Β Β©Β«Β®ΡΒ ΠΏ Π±ΠΠ±Π²ÒΒ¬Β 
+DEL /f /q %systemroot%\Panther\*.*
+ECHO β€Π»Π‡Β®Β«Β­ÒΒ­Β®
+ECHO.
+REM ------------------------------------------------------------------------------------------
+
+REM ------------------------------------------------------------------------------------------
+ECHO.
+ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ AppCompat - Π΄Β Β©Β«Β®ΡΒ ΠΏ Π±ΠΠ±Π²ÒΒ¬Β 
+DEL /f /q %systemroot%\appcompat\Programs\*.dll
+DEL /f /q %systemroot%\appcompat\Programs\*.exe
+DEL /f /q %systemroot%\appcompat\Programs\*.txt
+DEL /f /q %systemroot%\appcompat\Programs\*.xml
+DEL /f /q %systemroot%\appcompat\Programs\Install\*.txt
+DEL /f /q %systemroot%\appcompat\Programs\Install\*.xml
+DEL /f /q %systemroot%\appcompat\Programs\Install\*.dll
+DEL /f /q %systemroot%\appcompat\Programs\Install\*.exe
+ECHO β€Π»Π‡Β®Β«Β­ÒΒ­Β®
+ECHO.
+REM ----
+
+
+REM ------------------------------------------------------------------------------------------
+	ECHO.
+	REM Prefetch. β€Β¤Β Β«ÒΒ­ΠÒ Π΄Β Β©Β«Β®Ρ, Β®Π‡Π²ΠΒ¬ΠΒ§ΠΠ°Π³ΠΎΠΉΠΠµ Β§Β Π‡Π³Π±Π„ Π‡Π°ΠΒ«Β®Β¦ÒΒ­ΠΒ©. Windows Ρ Π±Β«ÒΒ¤Π³ΠΎΠΉΠΒ© Π°Β Β§ Β§Β ΠΠ°Π³Β§ΠΠ²Π±ΠΏ Β¬ÒΒ¤Β«ÒΒ­Β­ÒÒ
+	REM Π³Π²ΠΒ«ΠΠ²Π» NirSoft - LastActivityView, ExecutedProgramsList
+	ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ Prefetch - Π΄Β Β©Β«Β®ΡΒ ΠΏ Π±ΠΠ±Π²ÒΒ¬Β 
+	DEL /f /q %systemroot%\Prefetch\*.pf
+	DEL /f /q %systemroot%\Prefetch\*.ini
+	DEL /f /q %systemroot%\Prefetch\*.7db
+	DEL /f /q %systemroot%\Prefetch\*.ebd
+	DEL /f /q %systemroot%\Prefetch\*.bin
+	REM SuperFetch. β€Β¤Β Β«ÒΒ­ΠÒ ΠΒ Β§ Β®Π‡Π²ΠΒ¬ΠΒ§Β Π¶ΠΠ SuperFetch
+	DEL /f /q %systemroot%\Prefetch\*.db
+	REM Trace. β€Β¤Β Β«ÒΒ­ΠÒ Π΄Β Β©Β«Β®Ρ Π²Π°Β Π±Π±ΠΠ°Β®ΡΠ„Π
+	DEL /f /q %systemroot%\Prefetch\ReadyBoot\*.fx
+	ECHO β€Π»Π‡Β®Β«Β­ÒΒ­Β®
+	ECHO.
+
+	ECHO.
+	ECHO Π‹β€”β‚¬β€β€™Π‰Π‚ β‚¬β€β€™Π‹Ρ’β‚¬β‚¬ Minidump - Π΄Β Β©Β«Β®ΡΒ ΠΏ Π±ΠΠ±Π²ÒΒ¬Β 
+	REM β€Β¤Β Β«ÒΒ­ΠÒ Β¤Β Β¬Π‡Β®Ρ Β®ΠΈΠΠΒ®Π„
+	REM Π³Π²ΠΒ«ΠΠ²Π» NirSoft - LastActivityView
+	DEL /f /q %systemroot%\Minidump\*.*
+	ECHO β€Π»Π‡Β®Β«Β­ÒΒ­Β®
+COLOR 02
+ECHO.
+
+
+
+EXIT
+
+:do_clear
+ECHO Π‹Π·ΠΠ±Π²Π„Β  Β¦Π³Π°Β­Β Β«Β  %1
+wevtutil.exe cl %1
+GOTO :eof
+
+:errNoAdmin
+COLOR 4
+ECHO ΠÒΒ®ΠΠµΒ®Β¤ΠΒ¬Β® Β§Β Π‡Π³Π±Π²ΠΠ²ΠΌ Π½Π²Β®Π² Π±Π„Π°ΠΠ‡Π² Β®Π² ΠΒ¬ÒΒ­Π Β Β¤Β¬ΠΒ­ΠΠ±Π²Π°Β Π²Β®Π°Β 
+ECHO.
 PAUSE
