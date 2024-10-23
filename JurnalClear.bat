@@ -11,7 +11,7 @@ ipconfig / release
 ipconfig / renew
 ipconfig / flushdns
 @ECHO OFF
-@TITLE = Our FunPay Yany1944 \ ElixOS.
+@TITLE = [QIONYX LEGEND].
 REM Ќ ¤Ґобм, б®еа ­Ёвм д ©« ў Є®¤Ёа®ўЄҐ DOS-866 ­Ґ § Ўл«Ё
 CHCP 866
 
