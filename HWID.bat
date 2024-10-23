@@ -1,6 +1,6 @@
 
 @echo off
-title = FunPay - Yany1944/ElixOS
+title = Funpay Yany1944 / ElixOS
 color C
 @ ECHO.
 @ ECHO ------------------------------------------------------------------------------------------------------------------------
@@ -1140,6 +1140,7 @@ net start iphlpsvc
 echo                 				System cleaned successfully
 @ ECHO.
 echo. & pause
+
 
 
 
