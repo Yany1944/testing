@@ -1,6 +1,6 @@
-
+z
 @echo off
-title = FunPay - Yany1944/ElixOS
+title = FunPay - Cleaner Hyper-Collision.fun
 color C
 @ ECHO.
 @ ECHO ------------------------------------------------------------------------------------------------------------------------
