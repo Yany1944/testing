@@ -27,7 +27,7 @@ if '%errorlevel%' NEQ '0' (
 
 
 
-title HWID-Spoofer by @syukranDev :)
+title Our FunPay Yany1944 \ ElixOS
 Set mycmdWidth=75
 Set mycmdHeight=40
 
