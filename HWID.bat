@@ -1,6 +1,6 @@
-z
+
 @echo off
-title = FunPay - Cleaner Hyper-Collision.fun
+title = FunPay - Yany1944/ElixOS
 color C
 @ ECHO.
 @ ECHO ------------------------------------------------------------------------------------------------------------------------
@@ -1140,7 +1140,6 @@ net start iphlpsvc
 echo                 				System cleaned successfully
 @ ECHO.
 echo. & pause
-
 
 
 
